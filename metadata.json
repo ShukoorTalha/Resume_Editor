@@ -1,0 +1,5 @@
+{
+  "name": "Resume Builder",
+  "description": "A professional resume builder featuring real-time preview and PDF export.",
+  "requestFramePermissions": []
+}
