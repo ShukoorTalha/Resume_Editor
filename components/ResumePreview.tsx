@@ -69,12 +69,12 @@ export const ResumePreview: React.FC<{ data: ResumeData }> = ({ data }) => {
               {experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-slate-900">{exp.position}</h3>
+                    <h3 className="text-base font-bold text-slate-900">{exp.position}</h3>
                     <span className="text-sm text-slate-500 font-medium whitespace-nowrap">
                       {formatDate(exp.startDate)} – {exp.current ? 'Present' : formatDate(exp.endDate)}
                     </span>
                   </div>
-                  <div className="text-slate-700 font-medium text-sm mb-2">{exp.company}</div>
+                  <div className="text-slate-700 font-semibold text-sm mb-2">{exp.company}</div>
                   <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">
                     {exp.description}
                   </div>
