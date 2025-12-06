@@ -1,13 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { ResumeEditor } from './components/ResumeEditor';
 import { ResumePreview } from './components/ResumePreview';
 import { initialResumeState, ResumeData } from './types';
 import { FileDown, Layout, Printer, Loader2 } from 'lucide-react';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { ToastProvider, useToast } from './context/ToastContext';
 
-const App: React.FC = () => {
-  const [resumeData, setResumeData] = useState<ResumeData>(initialResumeState);
+const AppContent: React.FC = () => {
+  const [resumeData, setResumeData] = useLocalStorage<ResumeData>('resume-data', initialResumeState);
   const [view, setView] = useState<'both' | 'edit' | 'preview'>('both');
   const [isDownloading, setIsDownloading] = useState(false);
+  const { showToast } = useToast();
 
   const handlePrint = () => {
     window.print();
@@ -20,7 +23,7 @@ const App: React.FC = () => {
     setIsDownloading(true);
     // @ts-ignore
     if (!window.html2pdf) {
-      alert('PDF library not loaded');
+      showToast('PDF library not loaded', 'error');
       setIsDownloading(false);
       return;
     }
@@ -36,9 +39,10 @@ const App: React.FC = () => {
     try {
       // @ts-ignore
       await window.html2pdf().set(opt).from(element).save();
+      showToast('Resume downloaded successfully!', 'success');
     } catch (error) {
       console.error('PDF generation failed:', error);
-      alert('Failed to generate PDF. Please try again.');
+      showToast('Failed to generate PDF. Please try again.', 'error');
     } finally {
       setIsDownloading(false);
     }
@@ -136,4 +140,10 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default function App() {
+  return (
+    <ToastProvider>
+      <AppContent />
+    </ToastProvider>
+  );
+}

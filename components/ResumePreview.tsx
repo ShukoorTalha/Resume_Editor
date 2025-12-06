@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResumeData } from '../types';
-import { Mail, Phone, MapPin, Linkedin, Globe, ExternalLink } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Globe } from 'lucide-react';
 
 export const ResumePreview: React.FC<{ data: ResumeData }> = ({ data }) => {
   const { profile, experience, education, skills } = data;
