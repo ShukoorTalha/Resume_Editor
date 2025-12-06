@@ -34,6 +34,35 @@ sudo usermod -aG docker jenkins
 sudo systemctl restart jenkins
 ```
 
+**If Docker is installed via Snap:**
+
+Run the fix script:
+```bash
+chmod +x scripts/fix-jenkins-docker.sh
+sudo ./scripts/fix-jenkins-docker.sh
+```
+
+Or manually fix:
+```bash
+sudo snap connect docker:home :home
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+```
+
+**Verify Docker access:**
+```bash
+sudo -u jenkins docker ps
+```
+
+If Snap Docker still causes issues, install Docker via apt instead:
+```bash
+sudo snap remove docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+```
+
 ### 3. Create Jenkins Pipeline Job
 
 1. Go to **Jenkins Dashboard** → **New Item**
@@ -151,6 +180,45 @@ After successful deployment:
 - Check Docker: `docker ps | grep resume-builder`
 
 ## Troubleshooting
+
+### Snap Docker Error: "home directories outside of /home needs configuration"
+
+**Error**: 
+```
+Sorry, home directories outside of /home needs configuration.
+See https://forum.snapcraft.io/t/11209 for details.
+```
+
+**This is the most common error!** It happens when Docker is installed via Snap.
+
+**Quick Fix - Run the automated script:**
+```bash
+chmod +x scripts/fix-jenkins-docker.sh
+sudo ./scripts/fix-jenkins-docker.sh
+```
+
+**Manual Fix Option 1 (Configure Snap):**
+```bash
+sudo snap connect docker:home :home
+sudo systemctl restart jenkins
+```
+
+**Manual Fix Option 2 (Recommended - Install Docker via apt):**
+```bash
+# Remove snap docker
+sudo snap remove docker
+
+# Install Docker properly
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Add jenkins to docker group
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+
+# Verify
+sudo -u jenkins docker ps
+```
 
 ### Pipeline Fails at Build Stage
 

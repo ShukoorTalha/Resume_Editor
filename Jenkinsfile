@@ -1,3 +1,7 @@
+// Jenkins CI/CD Pipeline for Resume Builder
+// Compatible with both regular Docker and Snap-installed Docker
+// For Snap Docker issues, see: https://forum.snapcraft.io/t/11209
+
 pipeline {
     agent any
     
@@ -21,12 +25,13 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
+                    // Build with docker command directly to avoid snap issues
                     if (env.DOCKER_REGISTRY) {
-                        docker.build("${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
-                        docker.build("${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest")
+                        sh "docker build -t ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ."
+                        sh "docker tag ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest"
                     } else {
-                        docker.build("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
-                        docker.build("${env.DOCKER_IMAGE}:latest")
+                        sh "docker build -t ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ."
+                        sh "docker tag ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ${env.DOCKER_IMAGE}:latest"
                     }
                 }
             }
@@ -101,9 +106,12 @@ pipeline {
             steps {
                 echo 'Pushing image to registry...'
                 script {
-                    docker.withRegistry("https://${env.DOCKER_REGISTRY}", 'docker-credentials') {
-                        docker.image("${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
-                        docker.image("${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest").push()
+                    // Use docker command directly for pushing
+                    withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin ${env.DOCKER_REGISTRY}"
+                        sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
+                        sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest"
+                        sh "docker logout ${env.DOCKER_REGISTRY}"
                     }
                 }
             }
