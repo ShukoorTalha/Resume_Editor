@@ -12,11 +12,12 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine
+FROM node:18-alpine as runner
 
 WORKDIR /app
 
-RUN npm install -g http-server
+# Install runtime deps (ensure curl/wget/nc are available for health checks)
+RUN apk add --no-cache curl wget netcat-openbsd
 
 COPY --from=builder /app/dist ./dist
 
