@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-controller
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/workspace
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    restart: unless-stopped
+    networks:
+      - jenkins-network
+
+  # Resume Builder Application
+  resume-builder:
+    build: .
+    container_name: resume-builder
+    ports:
+      - "8080:80"
+    environment:
+      - NODE_ENV=production
+    restart: always
+    networks:
+      - jenkins-network
+    depends_on:
+      - jenkins
+
+volumes:
+  jenkins_home:
+
+networks:
+  jenkins-network:
+    driver: bridge
