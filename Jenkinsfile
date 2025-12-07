@@ -253,12 +253,16 @@ pipeline {
             steps {
                 echo 'Pushing image to registry...'
                 script {
-                    // Use docker command directly for pushing
-                    withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin ${env.DOCKER_REGISTRY}"
-                        sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
-                        sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest"
-                        sh "docker logout ${env.DOCKER_REGISTRY}"
+                    // Try to push but do not fail the pipeline if credentials are missing
+                    try {
+                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                            sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin ${env.DOCKER_REGISTRY}"
+                            sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
+                            sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest"
+                            sh "docker logout ${env.DOCKER_REGISTRY}"
+                        }
+                    } catch (err) {
+                        echo "docker-credentials not found or push failed: ${err}. Skipping push to registry."
                     }
                 }
             }
