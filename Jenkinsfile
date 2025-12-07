@@ -179,14 +179,9 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    // Build with docker command directly to avoid snap issues
-                    if (env.DOCKER_REGISTRY) {
-                        sh "docker build -t ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ."
-                        sh "docker tag ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:latest"
-                    } else {
-                        sh "docker build -t ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ."
-                        sh "docker tag ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ${env.DOCKER_IMAGE}:latest"
-                    }
+                    def baseTag = env.DOCKER_REGISTRY ? "${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}" : env.DOCKER_IMAGE
+                    sh "docker build -t ${baseTag}:${env.DOCKER_TAG} ."
+                    sh "docker tag ${baseTag}:${env.DOCKER_TAG} ${baseTag}:latest"
                 }
             }
         }
@@ -218,25 +213,15 @@ pipeline {
             steps {
                 echo 'Deploying new container...'
                 script {
-                    if (env.DOCKER_REGISTRY) {
-                        sh """
-                            docker run -d \
-                                --name ${env.CONTAINER_NAME} \
-                                --restart always \
-                                -p ${env.APP_PORT}:80 \
-                                -e NODE_ENV=production \
-                                ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}
-                        """
-                    } else {
-                        sh """
-                            docker run -d \
-                                --name ${env.CONTAINER_NAME} \
-                                --restart always \
-                                -p ${env.APP_PORT}:80 \
-                                -e NODE_ENV=production \
-                                ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}
-                        """
-                    }
+                    def imageTag = env.DOCKER_REGISTRY ? "${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.DOCKER_TAG}" : "${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
+                    sh """
+                        docker run -d \
+                            --name ${env.CONTAINER_NAME} \
+                            --restart always \
+                            -p ${env.APP_PORT}:80 \
+                            -e NODE_ENV=production \
+                            ${imageTag}
+                    """
                 }
             }
         }
@@ -245,13 +230,14 @@ pipeline {
             steps {
                 echo 'Performing health check (polling container)...'
                 script {
-                    // Poll the container's internal HTTP server using docker exec so the check works
-                    // when Jenkins is running inside a container (curl localhost from agent may fail).
                     timeout(time: 2, unit: 'MINUTES') {
                         waitUntil {
                             script {
                                 def status = sh(script: "docker exec ${env.CONTAINER_NAME} sh -c 'curl -s -o /dev/null -w \"%{http_code}\" http://localhost:80 || true'", returnStdout: true).trim()
                                 echo "Container HTTP status: ${status}"
+                                if (status != '200') {
+                                    sleep(time: 3, unit: 'SECONDS')
+                                }
                                 return status == '200'
                             }
                         }
@@ -299,6 +285,10 @@ pipeline {
         failure {
             echo '❌ Pipeline failed!'
             script {
+                // Capture container logs for debugging
+                sh """
+                    docker logs ${env.CONTAINER_NAME} || true
+                """
                 // Rollback to previous version if deployment fails
                 sh """
                     docker stop ${env.CONTAINER_NAME} || true
