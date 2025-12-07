@@ -243,12 +243,19 @@ pipeline {
         
         stage('Health Check') {
             steps {
-                echo 'Performing health check...'
+                echo 'Performing health check (polling container)...'
                 script {
-                    sleep(time: 10, unit: 'SECONDS')
-                    sh """
-                        curl -f http://localhost:${env.APP_PORT} || exit 1
-                    """
+                    // Poll the container's internal HTTP server using docker exec so the check works
+                    // when Jenkins is running inside a container (curl localhost from agent may fail).
+                    timeout(time: 2, unit: 'MINUTES') {
+                        waitUntil {
+                            script {
+                                def status = sh(script: "docker exec ${env.CONTAINER_NAME} sh -c 'curl -s -o /dev/null -w \"%{http_code}\" http://localhost:80 || true'", returnStdout: true).trim()
+                                echo "Container HTTP status: ${status}"
+                                return status == '200'
+                            }
+                        }
+                    }
                 }
             }
         }
