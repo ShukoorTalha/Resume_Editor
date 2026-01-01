@@ -31,6 +31,7 @@ export interface Skill {
   id: string;
   name: string;
   level: 'Beginner' | 'Intermediate' | 'Expert';
+  category: string;
 }
 
 export interface ResumeData {
@@ -59,7 +60,7 @@ export const initialResumeState: ResumeData = {
       startDate: "2021-03",
       endDate: "",
       current: true,
-      description: "• Led the redesign of the core SaaS platform, improving user retention by 25%.\n• Managed a team of 3 junior designers and established a unified design system.\n• Collaborated closely with product managers to define feature roadmaps.",
+      description: "• Led redesign of core SaaS platform to cut task time by 25% and lift retention by 12 pts.\n• Standardized a design system across 18 screens, reducing handoff defects by 35%.\n• Partnered with PM/Eng to prioritize roadmap, shipping 9 releases/quarter.",
     },
     {
       id: "2",
@@ -68,7 +69,7 @@ export const initialResumeState: ResumeData = {
       startDate: "2018-06",
       endDate: "2021-02",
       current: false,
-      description: "• Designed responsive websites for over 20 clients in fintech and healthcare.\n• Conducted user research and usability testing to iterate on interface designs.",
+      description: "• Delivered 20+ responsive client sites (fintech/healthcare) with Lighthouse 90+ scores.\n• Ran usability tests with 30 participants, driving 18% conversion uplift post-iteration.",
     }
   ],
   education: [
@@ -81,9 +82,9 @@ export const initialResumeState: ResumeData = {
     }
   ],
   skills: [
-    { id: "1", name: "Figma", level: "Expert" },
-    { id: "2", name: "React", level: "Intermediate" },
-    { id: "3", name: "TypeScript", level: "Intermediate" },
-    { id: "4", name: "User Research", level: "Expert" },
+    { id: "1", name: "Figma", level: "Expert", category: "Design" },
+    { id: "2", name: "React", level: "Intermediate", category: "Frontend" },
+    { id: "3", name: "TypeScript", level: "Intermediate", category: "Frontend" },
+    { id: "4", name: "User Research", level: "Expert", category: "Product" },
   ]
 };
