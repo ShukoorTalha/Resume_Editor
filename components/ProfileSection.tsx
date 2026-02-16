@@ -37,6 +37,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ profile, onChang
         <Input label="Phone" name="phone" placeholder="e.g. (555) 123-4567" value={profile.phone} onChange={onChange} />
         <Input label="Location" name="location" placeholder="e.g. San Francisco, CA" value={profile.location} onChange={onChange} />
         <Input label="LinkedIn" name="linkedin" placeholder="linkedin.com/in/jane" value={profile.linkedin} onChange={onChange} />
+        <Input label="GitHub" name="github" placeholder="github.com/jane" value={profile.github || ''} onChange={onChange} />
         <Input label="Website" name="website" placeholder="janedoe.com" value={profile.website} onChange={onChange} />
       </div>
       

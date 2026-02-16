@@ -42,6 +42,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
         position: '',
         startDate: '',
         endDate: '',
+        location: '',
         current: false,
         description: ''
       },
@@ -70,6 +71,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
             <Input label="Company" value={exp.company} placeholder="e.g. Google" onChange={(e) => updateExperience(exp.id, 'company', e.target.value)} />
             <Input label="Position" value={exp.position} placeholder="e.g. Product Manager" onChange={(e) => updateExperience(exp.id, 'position', e.target.value)} />
+            <Input label="Location" value={exp.location} placeholder="e.g. San Francisco, CA" onChange={(e) => updateExperience(exp.id, 'location', e.target.value)} />
             <Input label="Start Date" type="month" value={exp.startDate} onChange={(e) => updateExperience(exp.id, 'startDate', e.target.value)} />
             <div className="flex flex-col">
               <Input 

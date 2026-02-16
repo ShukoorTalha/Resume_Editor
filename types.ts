@@ -5,6 +5,7 @@ export interface Profile {
   phone: string;
   location: string;
   linkedin: string;
+  github?: string;
   website: string;
   summary: string;
 }
@@ -13,6 +14,7 @@ export interface Experience {
   id: string;
   company: string;
   position: string;
+  location: string;
   startDate: string;
   endDate: string;
   current: boolean;
@@ -24,6 +26,7 @@ export interface Education {
   school: string;
   degree: string;
   field: string;
+  location: string;
   graduationDate: string;
 }
 
@@ -34,57 +37,107 @@ export interface Skill {
   category: string;
 }
 
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  link?: string;
+}
+
+export interface Mentorship {
+  id: string;
+  title: string;
+  description: string;
+  link?: string;
+}
+
+export interface OtherItem {
+  id: string;
+  title: string;
+  description: string;
+  link?: string;
+}
+
 export interface ResumeData {
   profile: Profile;
   experience: Experience[];
   education: Education[];
   skills: Skill[];
+  projects: Project[];
+  mentorship: Mentorship[];
+  others: OtherItem[];
 }
 
 export const initialResumeState: ResumeData = {
   profile: {
-    fullName: "Alex Jordan",
-    title: "Senior Product Designer",
-    email: "alex.jordan@example.com",
-    phone: "(555) 123-4567",
+    fullName: "ALEX JORDAN",
+    title: "", // Not used in new template but keeping for compatibility
+    email: "alex.jordan@gmail.com",
+    phone: "123-456-7890",
     location: "San Francisco, CA",
     linkedin: "linkedin.com/in/alexjordan",
-    website: "alexjordan.design",
-    summary: "Creative and detail-oriented Product Designer with over 6 years of experience in building user-centric digital products. passionate about bridging the gap between engineering and design.",
+    github: "github.com/alexjordan",
+    website: "alexjordan.com",
+    summary: "", // Not used in new template
   },
   experience: [
     {
       id: "1",
-      company: "TechFlow Solutions",
-      position: "Senior UI/UX Designer",
-      startDate: "2021-03",
-      endDate: "",
+      company: "Tech Corp",
+      position: "Senior Software Engineer",
+      location: "San Francisco, CA",
+      startDate: "2020-01",
+      endDate: "Present",
       current: true,
-      description: "• Led redesign of core SaaS platform to cut task time by 25% and lift retention by 12 pts.\n• Standardized a design system across 18 screens, reducing handoff defects by 35%.\n• Partnered with PM/Eng to prioritize roadmap, shipping 9 releases/quarter.",
+      description: "• Led a team of 5 developers to build a scalable microservices architecture.\n• Improved system performance by 30% through optimizing database queries and caching strategies."
     },
     {
       id: "2",
-      company: "Creative Pulse Agency",
-      position: "UI Designer",
-      startDate: "2018-06",
-      endDate: "2021-02",
+      company: "Startup Inc",
+      position: "Software Engineer",
+      location: "New York, NY",
+      startDate: "2018-05",
+      endDate: "2019-12",
       current: false,
-      description: "• Delivered 20+ responsive client sites (fintech/healthcare) with Lighthouse 90+ scores.\n• Ran usability tests with 30 participants, driving 18% conversion uplift post-iteration.",
+      description: "• Developed full-stack features using React and Node.js.\n• Collaborated with product managers to define requirements and deliver high-quality software."
     }
   ],
   education: [
     {
       id: "1",
-      school: "University of California, Berkeley",
-      degree: "Bachelor of Arts",
-      field: "Cognitive Science",
-      graduationDate: "2018-05",
+      school: "University of Technology",
+      degree: "Bachelor of Science",
+      field: "Computer Science",
+      location: "San Francisco, CA",
+      graduationDate: "2018-05"
     }
   ],
   skills: [
-    { id: "1", name: "Figma", level: "Expert", category: "Design" },
-    { id: "2", name: "React", level: "Intermediate", category: "Frontend" },
-    { id: "3", name: "TypeScript", level: "Intermediate", category: "Frontend" },
-    { id: "4", name: "User Research", level: "Expert", category: "Product" },
+    { id: "1", name: "JavaScript", level: "Expert", category: "Languages" },
+    { id: "2", name: "TypeScript", level: "Expert", category: "Languages" },
+    { id: "3", name: "React", level: "Expert", category: "Frontend" },
+    { id: "4", name: "Node.js", level: "Intermediate", category: "Backend" }
+  ],
+  projects: [
+    {
+      id: "1",
+      title: "E-commerce Platform",
+      description: "Built a scalable e-commerce platform handling 10k+ concurrent users.",
+      link: "github.com/alexjordan/ecommerce"
+    }
+  ],
+  mentorship: [
+    {
+      id: "1",
+      title: "Junior Developer Mentor",
+      description: "Mentored 3 junior developers, guiding them through code reviews and career growth."
+    }
+  ],
+  others: [
+    {
+      id: "1",
+      title: "Open Source Contributor",
+      description: "Contributed to major React ecosystem libraries."
+    }
   ]
 };

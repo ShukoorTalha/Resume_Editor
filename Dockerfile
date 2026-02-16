@@ -29,4 +29,4 @@ EXPOSE 80
 # Clear any inherited ENTRYPOINT (node base image may set one) so http-server runs directly
 ENTRYPOINT []
 
-CMD ["http-server", "dist", "-p", "80"]
+CMD ["http-server", "dist", "-p", "80", "-c-1"]

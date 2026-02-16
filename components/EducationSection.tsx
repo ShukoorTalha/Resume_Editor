@@ -41,6 +41,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, o
         school: '',
         degree: '',
         field: '',
+        location: '',
         graduationDate: ''
       }
     ]);
@@ -67,6 +68,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, o
             <Input label="School / University" value={edu.school} placeholder="e.g. Stanford University" onChange={(e) => updateEducation(edu.id, 'school', e.target.value)} />
             <Input label="Degree" value={edu.degree} placeholder="e.g. Bachelor of Science" onChange={(e) => updateEducation(edu.id, 'degree', e.target.value)} />
             <Input label="Field of Study" value={edu.field} placeholder="e.g. Computer Science" onChange={(e) => updateEducation(edu.id, 'field', e.target.value)} />
+            <Input label="Location" value={edu.location} placeholder="e.g. Stanford, CA" onChange={(e) => updateEducation(edu.id, 'location', e.target.value)} />
             <Input label="Graduation Date" type="month" value={edu.graduationDate} onChange={(e) => updateEducation(edu.id, 'graduationDate', e.target.value)} />
           </div>
         </div>
