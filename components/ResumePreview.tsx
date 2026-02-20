@@ -182,16 +182,41 @@ export const ResumePreview: React.FC<{ data: ResumeData }> = ({ data }) => {
         <section>
           <div style={styles.sectionHeader}>SKILLS</div>
           <hr style={styles.divider} />
-          <ul style={{ ...styles.bulletList, paddingLeft: '15px' }}>
-             <li style={styles.bulletItem}>
-                {otherSkills.join(' | ')}
-             </li>
-             {languageSkills.length > 0 && (
-                 <li style={{ ...styles.bulletItem, fontStyle: 'italic' }}>
-                     Languages: {languageSkills.join(' | ')}
-                 </li>
-             )}
-          </ul>
+          <div style={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            gap: '8px', 
+            marginBottom: '12px',
+            lineHeight: '1.4'
+          }}>
+             {otherSkills.map((skill, index) => (
+               <span key={index} style={{
+                 display: 'inline-block',
+                 padding: '0 4px'
+               }}>
+                 {skill}{index < otherSkills.length - 1 ? ' |' : ''}
+               </span>
+             ))}
+          </div>
+          {languageSkills.length > 0 && (
+            <div style={{ 
+              display: 'flex', 
+              flexWrap: 'wrap', 
+              gap: '8px',
+              fontStyle: 'italic',
+              lineHeight: '1.4'
+            }}>
+              <span style={{ padding: '0 4px' }}>Languages:</span>
+              {languageSkills.map((skill, index) => (
+                <span key={index} style={{
+                  display: 'inline-block',
+                  padding: '0 4px'
+                }}>
+                  {skill}{index < languageSkills.length - 1 ? ' |' : ''}
+                </span>
+              ))}
+            </div>
+          )}
         </section>
       )}
 
