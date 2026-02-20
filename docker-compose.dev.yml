@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    container_name: resume-builder-dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    working_dir: /app
+    command: npx vite --host 0.0.0.0 --port 3000
+    restart: unless-stopped

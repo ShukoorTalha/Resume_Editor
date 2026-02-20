@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResumeData } from '../types';
-import { Mail, Phone, Linkedin, Globe } from 'lucide-react';
+import { Mail, Phone, Linkedin, Globe, Github } from 'lucide-react';
 
 export const ResumePreview: React.FC<{ data: ResumeData }> = ({ data }) => {
   const { profile, experience, education, skills, projects, mentorship, others } = data;
@@ -151,6 +151,17 @@ export const ResumePreview: React.FC<{ data: ResumeData }> = ({ data }) => {
                     <span>
                         <Phone style={styles.icon} />
                         <a href={`tel:${profile.phone}`} style={styles.link}>{profile.phone}</a>
+                    </span>
+                    <Separator />
+                </>
+            )}
+            {profile.github && (
+                <>
+                    <span>
+                        <Github style={styles.icon} />
+                        <a href={profile.github.startsWith('http') ? profile.github : `https://${profile.github}`} style={styles.link}>
+                            GitHub
+                        </a>
                     </span>
                     <Separator />
                 </>
