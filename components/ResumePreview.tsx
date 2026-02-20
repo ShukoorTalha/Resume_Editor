@@ -182,40 +182,13 @@ export const ResumePreview: React.FC<{ data: ResumeData }> = ({ data }) => {
         <section>
           <div style={styles.sectionHeader}>SKILLS</div>
           <hr style={styles.divider} />
-          <div style={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            gap: '8px', 
-            marginBottom: '12px',
-            lineHeight: '1.4'
-          }}>
-             {otherSkills.map((skill, index) => (
-               <span key={index} style={{
-                 display: 'inline-block',
-                 padding: '0 4px'
-               }}>
-                 {skill}{index < otherSkills.length - 1 ? ' |' : ''}
-               </span>
-             ))}
-          </div>
+          <p style={{ ...styles.bulletItem, marginBottom: '6px' }}>
+             {otherSkills.join(' | ')} {otherSkills.length > 0 ? '|' : ''}
+          </p>
           {languageSkills.length > 0 && (
-            <div style={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              gap: '8px',
-              fontStyle: 'italic',
-              lineHeight: '1.4'
-            }}>
-              <span style={{ padding: '0 4px' }}>Languages:</span>
-              {languageSkills.map((skill, index) => (
-                <span key={index} style={{
-                  display: 'inline-block',
-                  padding: '0 4px'
-                }}>
-                  {skill}{index < languageSkills.length - 1 ? ' |' : ''}
-                </span>
-              ))}
-            </div>
+            <p style={{ ...styles.bulletItem, fontStyle: 'italic' }}>
+              Languages: {languageSkills.join(' | ')} |
+            </p>
           )}
         </section>
       )}
