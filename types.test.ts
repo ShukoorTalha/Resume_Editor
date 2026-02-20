@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ResumeData } from '../types';
+import { ResumeData } from './types';
 
 describe('ResumeData Types', () => {
   it('should create valid resume data structure', () => {

@@ -5,6 +5,7 @@ export interface Profile {
   phone: string;
   location: string;
   linkedin: string;
+  github?: string;
   website: string;
   summary: string;
 }

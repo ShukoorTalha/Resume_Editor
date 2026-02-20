@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ProfileSection } from './components/ProfileSection';
+import { ProfileSection } from './ProfileSection';
 
 describe('ProfileSection Component', () => {
   it('should render profile section with inputs', () => {
@@ -16,7 +16,7 @@ describe('ProfileSection Component', () => {
       summary: 'Experienced designer',
     };
 
-    const mockOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const mockOnChange = (_e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       // Mock handler
     };
 
