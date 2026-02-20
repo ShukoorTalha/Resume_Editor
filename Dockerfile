@@ -1,32 +1,24 @@
-# Build stage
+# Build stage - compile React app with Node
 FROM node:18-alpine AS builder
 
 WORKDIR /app
-
 COPY package*.json ./
-
-RUN npm install
-
+RUN npm ci
 COPY . .
-
 RUN npm run build
 
-# Production stage
-FROM node:18-alpine AS runner
+# Production stage - serve with lightweight Nginx
+FROM nginx:alpine
 
-WORKDIR /app
+WORKDIR /usr/share/nginx/html
 
-# Install runtime deps (ensure curl/wget/nc are available for health checks)
-RUN apk add --no-cache curl wget netcat-openbsd
-
-# Install global http-server so the container can serve static files
-RUN npm install -g http-server
-
-COPY --from=builder /app/dist ./dist
+# Copy built app from builder stage
+COPY --from=builder /app/dist .
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
-# Clear any inherited ENTRYPOINT (node base image may set one) so http-server runs directly
-ENTRYPOINT []
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost/index.html || exit 1
 
-CMD ["http-server", "dist", "-p", "80", "-c-1"]
+CMD ["nginx", "-g", "daemon off;"]
