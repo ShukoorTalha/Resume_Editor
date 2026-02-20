@@ -5,6 +5,8 @@ import { ProfileSection } from './ProfileSection';
 import { ExperienceSection } from './ExperienceSection';
 import { EducationSection } from './EducationSection';
 import { SkillsSection } from './SkillsSection';
+import { MentorshipSection } from './MentorshipSection';
+import { OtherSection } from './OtherSection';
 
 interface ResumeEditorProps {
   data: ResumeData;
@@ -69,6 +71,30 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
         <SkillsSection 
           skills={data.skills} 
           onChange={(skills) => onChange({ ...data, skills })}
+        />
+      </Section>
+
+      {/* Mentorship Section */}
+      <Section 
+        title="Mentorship" 
+        isOpen={activeSection === 'mentorship'} 
+        onToggle={() => toggleSection('mentorship')}
+      >
+        <MentorshipSection 
+          mentorship={data.mentorship} 
+          onChange={(mentorship) => onChange({ ...data, mentorship })}
+        />
+      </Section>
+
+      {/* Other Items Section */}
+      <Section 
+        title="Other" 
+        isOpen={activeSection === 'others'} 
+        onToggle={() => toggleSection('others')}
+      >
+        <OtherSection 
+          others={data.others} 
+          onChange={(others) => onChange({ ...data, others })}
         />
       </Section>
     </div>

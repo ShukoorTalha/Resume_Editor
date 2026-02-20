@@ -5,7 +5,6 @@ export interface Profile {
   phone: string;
   location: string;
   linkedin: string;
-  github?: string;
   website: string;
   summary: string;
 }
@@ -76,7 +75,6 @@ export const initialResumeState: ResumeData = {
     phone: "123-456-7890",
     location: "San Francisco, CA",
     linkedin: "linkedin.com/in/alexjordan",
-    github: "github.com/alexjordan",
     website: "alexjordan.com",
     summary: "", // Not used in new template
   },
