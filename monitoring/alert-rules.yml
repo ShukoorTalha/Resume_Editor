@@ -1,0 +1,168 @@
+# Alert Rules for Resume Builder
+
+groups:
+  - name: resume-builder-alerts
+    interval: 30s
+    rules:
+      # Application Alerts
+      - alert: AppDown
+        expr: up{job="resume-builder-app"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          service: application
+        annotations:
+          summary: "Resume Builder application is down"
+          description: "Resume Builder app has been unreachable for more than 5 minutes"
+
+      - alert: HighErrorRate
+        expr: |
+          (sum(rate(http_requests_total{status=~"5.."}[5m])) 
+           / sum(rate(http_requests_total[5m]))) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 5% (current: {{ $value | humanizePercentage }})"
+
+      - alert: ResponseTimeHigh
+        expr: |
+          histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 10m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s"
+
+      # Nginx Alerts
+      - alert: NginxDown
+        expr: up{job="nginx"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          service: nginx
+        annotations:
+          summary: "Nginx is down"
+          description: "Nginx reverse proxy has been unreachable for more than 5 minutes"
+
+      - alert: NginxHighConnectionCount
+        expr: |
+          rate(nginx_connections_accepted_total[5m]) > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: nginx
+        annotations:
+          summary: "High connection rate to Nginx"
+          description: "Connection rate: {{ $value }} connections/sec"
+
+      # System Alerts
+      - alert: HighMemoryUsage
+        expr: |
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value | humanizePercentage }}"
+
+      - alert: HighCPUUsage
+        expr: |
+          (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is {{ $value | humanize }}%"
+
+      - alert: DiskSpaceLow
+        expr: |
+          (node_filesystem_avail_bytes{fstype!~"tmpfs"} / node_filesystem_size_bytes) < 0.15
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk space available: {{ $value | humanizePercentage }}"
+
+      - alert: DiskSpaceCritical
+        expr: |
+          (node_filesystem_avail_bytes{fstype!~"tmpfs"} / node_filesystem_size_bytes) < 0.05
+        for: 2m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "Critical: Disk space running out"
+          description: "Disk space available: {{ $value | humanizePercentage }}"
+
+      # Container Alerts
+      - alert: ContainerRestartingTooOften
+        expr: |
+          rate(container_last_seen{container_name="resume-builder-prod"}[5m]) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          service: containers
+        annotations:
+          summary: "Container restarting frequently"
+          description: "Resume Builder container restart rate: {{ $value }} per second"
+
+      # Build Pipeline Alerts
+      - alert: JenkinsBuildFailure
+        expr: |
+          jenkins_job_last_build_result{job_name="resume-builder"} == 0
+        for: 0m
+        labels:
+          severity: critical
+          service: ci-cd
+        annotations:
+          summary: "Jenkins build failed"
+          description: "Resume Builder build failed. Check Jenkins console: {{ $labels.jenkins_url }}"
+
+      - alert: JenkinsBuildSlowness
+        expr: |
+          jenkins_job_last_build_duration_seconds{job_name="resume-builder"} > 1800
+        for: 5m
+        labels:
+          severity: warning
+          service: ci-cd
+        annotations:
+          summary: "Jenkins build taking too long"
+          description: "Build duration: {{ $value | humanizeDuration }}"
+
+  # SLA/Availability Rules
+  - name: sla-rules
+    interval: 1m
+    rules:
+      - record: job:availability:5m
+        expr: |
+          avg by (job) (up)
+
+      - record: job:availability:1h
+        expr: |
+          avg_over_time(job:availability:5m[1h])
+
+      - record: job:availability:24h
+        expr: |
+          avg_over_time(job:availability:5m[24h])
+
+      - alert: SLAViolation
+        expr: |
+          job:availability:24h < 0.99
+        for: 5m
+        labels:
+          severity: critical
+          slo: "99%"
+        annotations:
+          summary: "SLA violation: availability below 99%"
+          description: "24-hour availability: {{ $value | humanizePercentage }}"
