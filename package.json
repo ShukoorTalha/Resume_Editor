@@ -10,8 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint src components --ext .ts,.tsx",
-    "lint:fix": "eslint src components --ext .ts,.tsx --fix",
+    "lint": "eslint components --ext .ts,.tsx",
+    "lint:fix": "eslint components --ext .ts,.tsx --fix",
     "security:audit": "npm audit --audit-level=moderate",
     "type-check": "tsc --noEmit"
   },
