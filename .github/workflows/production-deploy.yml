@@ -37,7 +37,7 @@ jobs:
         run: npm run type-check
 
       - name: Run Tests
-        run: npm run test:coverage
+        run: npm run test
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
