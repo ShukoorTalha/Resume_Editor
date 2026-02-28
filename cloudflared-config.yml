@@ -1,0 +1,7 @@
+tunnel: 3b039d92-1f2f-4a24-96ac-2f2128103d0f
+credentials-file: /etc/cloudflared/creds.json
+
+ingress:
+  - hostname: generator.shukoor.cloud
+    service: http://app:3000
+  - service: http_status:404

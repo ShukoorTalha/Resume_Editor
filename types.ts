@@ -70,76 +70,75 @@ export interface ResumeData {
 
 export const initialResumeState: ResumeData = {
   profile: {
-    fullName: "ALEXANDER JORDAN",
-    title: "Senior Staff Software Engineer",
-    email: "alexander.jordan@gmail.com",
-    phone: "415-555-0198",
-    location: "San Francisco, CA",
-    linkedin: "linkedin.com/in/alexanderjordan-swe",
-    website: "alexanderjordan.dev",
-    summary: "Senior engineering leader with 10+ years of experience architecting distributed systems.",
+    fullName: "EMILY CHEN",
+    title: "Product Manager",
+    email: "emily.chen@example.com",
+    phone: "212-555-0987",
+    location: "New York, NY",
+    linkedin: "linkedin.com/in/emilychen-pm",
+    website: "emilychenpm.com",
+    summary: "Strategic Product Manager with 8+ years of experience leading cross-functional teams to deliver user-centric SaaS products.",
   },
   experience: [
     {
       id: "1",
-      company: "CloudScale Technologies",
-      position: "Senior Staff Software Engineer",
-      location: "San Francisco, CA",
-      startDate: "2021-03",
+      company: "InnovateTech Solutions",
+      position: "Senior Product Manager",
+      location: "New York, NY",
+      startDate: "2020-05",
       endDate: "Present",
       current: true,
-      description: "• Architected a globally-distributed, multi-region event streaming platform handling 50B+ events daily with 99.99% uptime.\n• Led a cross-functional organization of 25 engineers across 4 squads to migrate legacy monoliths to a golang microservices architecture.\n• Reduced cloud infrastructure spending by 40% ($1.2M annually) through optimizing kubernetes resource allocation and implementing spot instance orchestration.\n• Mentored 8 senior engineers through promotion to staff level, standardizing system design review processes across the engineering department."
+      description: "• Led the end-to-end development and launch of a new AI-driven analytics dashboard, resulting in a 35% increase in user engagement.\n• Managed a cross-functional team of 15 engineers and designers, utilizing Agile methodologies to accelerate time-to-market by 20%.\n• Conducted extensive user research and A/B testing, driving data-informed decisions that improved conversion rates by 15%.\n• Established key performance indicators (KPIs) and actively tracked product analytics to iteratively optimize feature adoption."
     },
     {
       id: "2",
-      company: "DataFlow Systems",
-      position: "Senior Software Engineer",
-      location: "Seattle, WA",
-      startDate: "2017-08",
-      endDate: "2021-02",
+      company: "Growth Dynamics App",
+      position: "Product Manager",
+      location: "Boston, MA",
+      startDate: "2016-09",
+      endDate: "2020-04",
       current: false,
-      description: "• Designed and implemented a distributed caching tier using Redis Cluster, reducing median API latency from 250ms to 45ms.\n• Spearheaded the adoption of GraphQL, reducing client over-fetching and decreasing payload sizes by 60%.\n• Developed critical path payment processing pipelines handling $50M+ in daily transaction volume with zero data loss."
+      description: "• Directed the mobile app redesign strategy, achieving a 4.8-star user rating and significantly reducing user churn by 25%.\n• Prioritized product roadmap features based on customer feedback loops and competitive market analysis.\n• Collaborated closely with the marketing team to align product launches with major campaigns, boosting quarterly revenue by $2M."
     },
     {
       id: "3",
-      company: "Acme Analytics",
-      position: "Software Engineer",
-      location: "New York, NY",
+      company: "StartUp Inc.",
+      position: "Associate Product Manager",
+      location: "Austin, TX",
       startDate: "2014-06",
-      endDate: "2017-07",
+      endDate: "2016-08",
       current: false,
-      description: "• Built robust ETL pipelines using Python and Apache Airflow to process 10TB of daily telemetry data.\n• Transitioned core services from on-premise hardware to AWS."
+      description: "• Authored detailed product requirements documents (PRDs) and user stories for core platform enhancements.\n• Coordinated sprint planning and daily standups as a certified Scrum Master."
     }
   ],
   education: [
     {
       id: "1",
-      school: "University of California, Berkeley",
-      degree: "Master of Science",
-      field: "Computer Science",
-      location: "Berkeley, CA",
+      school: "New York University (NYU)",
+      degree: "Master of Business Administration (MBA)",
+      field: "Product Strategy",
+      location: "New York, NY",
       graduationDate: "2014-05"
     },
     {
       id: "2",
-      school: "University of Washington",
+      school: "Boston University",
       degree: "Bachelor of Science",
-      field: "Computer Engineering",
-      location: "Seattle, WA",
+      field: "Business Administration",
+      location: "Boston, MA",
       graduationDate: "2012-05"
     }
   ],
   skills: [
-    { id: "1", name: "Golang", level: "Expert", category: "Languages" },
-    { id: "2", name: "Python", level: "Expert", category: "Languages" },
-    { id: "3", name: "Java", level: "Expert", category: "Languages" },
-    { id: "4", name: "TypeScript", level: "Expert", category: "Languages" },
-    { id: "5", name: "Rust", level: "Intermediate", category: "Languages" },
-    { id: "10", name: "Distributed Systems Architecture", level: "Expert", category: "Core" },
-    { id: "11", name: "Microservices", level: "Expert", category: "Core" },
-    { id: "12", name: "System Design", level: "Expert", category: "Core" },
-    { id: "13", name: "Kubernetes/Docker", level: "Expert", category: "Core" },
-    { id: "14", name: "AWS/GCP Multi-Cloud", level: "Expert", category: "Core" }
+    { id: "1", name: "Product Strategy", level: "Expert", category: "Core" },
+    { id: "2", name: "Agile/Scrum", level: "Expert", category: "Core" },
+    { id: "3", name: "Data Analytics", level: "Expert", category: "Core" },
+    { id: "4", name: "User Research", level: "Expert", category: "Core" },
+    { id: "5", name: "A/B Testing", level: "Intermediate", category: "Core" },
+    { id: "10", name: "Jira / Confluence", level: "Expert", category: "Tools" },
+    { id: "11", name: "Mixpanel / Amplitude", level: "Expert", category: "Tools" },
+    { id: "12", name: "Figma", level: "Expert", category: "Tools" },
+    { id: "13", name: "SQL", level: "Intermediate", category: "Tools" }
   ],
   projects: [
     {
