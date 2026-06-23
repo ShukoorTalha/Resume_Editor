@@ -54,7 +54,13 @@ If you have Docker installed, you can get up and running in seconds.
    docker-compose up -d
    ```
 
-3. Open your browser and navigate to `http://localhost:8080`
+  If you run it manually with `docker run`, include restart support:
+
+  ```bash
+  docker run -d --restart unless-stopped -p 8081:80 resume-builder:latest
+  ```
+
+3. Open your browser and navigate to `http://localhost:8081`
 
 ### Option 2: Run with Node.js
 

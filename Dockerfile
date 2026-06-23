@@ -16,10 +16,17 @@ WORKDIR /usr/share/nginx/html
 
 RUN apk add --no-cache ca-certificates curl tzdata \
   && update-ca-certificates \
-  && case "$TARGETARCH" in \
-    amd64) CLOUDFLARED_ARCH=amd64 ;; \
-    arm64) CLOUDFLARED_ARCH=arm64 ;; \
-    *) echo "Unsupported architecture: $TARGETARCH" && exit 1 ;; \
+  && ARCH="${TARGETARCH:-}" \
+  && if [ -z "$ARCH" ]; then \
+    case "$(uname -m)" in \
+      x86_64) ARCH=amd64 ;; \
+      aarch64|arm64) ARCH=arm64 ;; \
+      *) echo "Unsupported architecture: $(uname -m)" && exit 1 ;; \
+    esac; \
+  fi \
+  && case "$ARCH" in \
+    amd64|arm64) CLOUDFLARED_ARCH="$ARCH" ;; \
+    *) echo "Unsupported architecture: $ARCH" && exit 1 ;; \
   esac \
   && curl -fsSL "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${CLOUDFLARED_ARCH}" -o /usr/local/bin/cloudflared \
   && chmod +x /usr/local/bin/cloudflared
