@@ -15,6 +15,28 @@ A modern, feature-rich resume builder built with React, TypeScript, and Tailwind
 
 ## Getting Started
 
+### One-command start for non-technical users
+
+If Docker is already installed, the simplest way to run the app is:
+
+```bash
+./quick-start.sh
+```
+
+If the file is not executable yet, run this once first:
+
+```bash
+chmod +x quick-start.sh
+```
+
+The first time you run it, the script asks for the Cloudflare tunnel token once, saves it locally in `.env`, and starts the app.
+
+If you already have a `.env` file, make sure it contains:
+
+```bash
+CLOUDFLARED_TUNNEL_TOKEN=your-token-here
+```
+
 ### Option 1: Run with Docker (Recommended)
 
 If you have Docker installed, you can get up and running in seconds.
