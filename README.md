@@ -31,8 +31,6 @@ chmod +x quick-start.sh
 
 The script starts the local Docker Compose stack and opens on port `8081`.
 
-If you want to use the Cloudflare tunnel workflow, run the tunnel Compose file explicitly and provide `CLOUDFLARED_TUNNEL_TOKEN` in your environment.
-
 ### Run locally with Docker
 
 If you just want the app running on your own machine, use the standard Compose file or the quick start script:
@@ -56,12 +54,6 @@ docker compose down
 ```
 
 This path is self-contained and does not require `npm install` during the Docker build.
-
-Optional tunnel workflow:
-
-```bash
-CLOUDFLARED_TUNNEL_TOKEN=your-token-here docker compose -f docker-compose.tunnel.yml up -d --build
-```
 
 ### Option 1: Run with Docker (Recommended)
 
