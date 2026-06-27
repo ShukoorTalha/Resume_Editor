@@ -5,7 +5,7 @@
 ### 1️⃣ Choose Your Setup Method
 
 #### **Option A: Quick Start (5 minutes)**
-Perfect for experienced users who want to get running immediately:
+Starts the local Docker app immediately:
 ```bash
 ./quick-start.sh
 ```
@@ -26,12 +26,14 @@ Perfect for developers who want to test during development:
 
 ## 📦 What Gets Set Up
 
-### All Three Scripts Automatically:
+### Quick start focuses on the local app:
 
-✅ **Install Dependencies**
-- npm packages from package.json
-- Testing frameworks (Vitest)
-- Linters and type checkers
+✅ **Build & Run**
+- Builds the Docker image locally
+- Starts the app with Docker Compose
+- Opens the app on port 8081
+
+### The other scripts still cover the broader automation workflow:
 
 ✅ **Code Quality & Testing**
 - TypeScript type checking
@@ -55,18 +57,16 @@ Perfect for developers who want to test during development:
 
 ## 🎯 Quick Start (Recommended)
 
-The absolute fastest way to get everything running:
+The absolute fastest way to get the local app running:
 
 ```bash
-cd /Users/shukoortalha/Resume_Builder/Resume_Editor
 ./quick-start.sh
 ```
 
-**That's it!** In 5 minutes you'll have:
-- ✅ All tests passing
-- ✅ Docker image built
-- ✅ Services running
-- ✅ Access URLs displayed
+**That's it!** In a couple of minutes you'll have:
+- ✅ Local Docker image built
+- ✅ App running on port 8081
+- ✅ Local access URL displayed
 
 ---
 
@@ -236,8 +236,8 @@ Are you new to this?
 ├─ YES → Run ./setup-full-automation.sh
 │        (Get full guidance and explanations)
 └─ NO → Have you run setup before?
-        ├─ YES → Run ./quick-start.sh
-        │        (Fast setup, familiar with process)
+      ├─ YES → Run ./quick-start.sh
+      │        (Fast local app start)
         └─ NO → Run ./setup-full-automation.sh
                (Get the full walkthrough)
 
@@ -429,10 +429,9 @@ If you get stuck:
 
 ## 🎉 You're All Set!
 
-**To get started right now:**
+**To get the local app started right now:**
 
 ```bash
-cd /Users/shukoortalha/Resume_Builder/Resume_Editor
 ./quick-start.sh
 ```
 

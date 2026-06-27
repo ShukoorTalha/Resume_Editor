@@ -3,37 +3,26 @@
 Three scripts to set up and test the complete automation pipeline:
 
 ## 🚀 Option 1: Quick Start (5 minutes)
-**Best for:** Experienced users who want to get started immediately
+**Best for:** Anyone who wants the app running locally fast
 
 ```bash
 ./quick-start.sh
 ```
 
 **What it does:**
-- ✅ Runs all tests locally
-- ✅ Builds Docker image
-- ✅ Tests Docker container
-- ✅ Starts monitoring stack (Prometheus, Grafana, Alertmanager)
-- ✅ Starts Jenkins
-- ✅ Shows access URLs
+- ✅ Starts the local Docker Compose app
+- ✅ Builds the app image
+- ✅ Opens the app on port 8081
+- ✅ Shows the local access URL
 
 **Output:**
 ```
 ✓ Type check passed
-✓ Lint passed
-✓ Tests passed
-✓ Security audit passed
-✓ Build successful
 ✓ Docker image built
-✓ Container is healthy
-✓ Monitoring stack started
-✓ Jenkins started
+✓ Local container is running
 
-Access your services:
-  • Jenkins: http://localhost:8080
-  • Prometheus: http://localhost:9090
-  • Grafana: http://localhost:3000
-  • Alertmanager: http://localhost:9093
+Access your app:
+  • App: http://localhost:8081
 ```
 
 ---
@@ -103,17 +92,8 @@ Access your services:
 ```bash
 ./quick-start.sh
 ```
-
-That's it! Everything will be running:
-- ✅ Tests passed
-- ✅ Docker built
-- ✅ Services started
-- ✅ Access URLs shown
-
----
-
-## 📚 Recommended Workflow
-
+Docker Compose   → docker compose up -d --build
+Docker Test      → Open http://localhost:8081
 ### First Time Setup
 ```bash
 # Run full setup with guidance
@@ -268,7 +248,7 @@ Next steps:
 ---
 
 **Choose your preference and run:**
-- **Fast setup?** → `./quick-start.sh`
+- **Fast local app?** → `./quick-start.sh`
 - **Need guidance?** → `./setup-full-automation.sh`
 - **Just testing?** → `./test-automation.sh`
 

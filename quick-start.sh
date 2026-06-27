@@ -25,34 +25,15 @@ if ! docker-compose version >/dev/null 2>&1 && ! docker compose version >/dev/nu
     exit 1
 fi
 
-if [ ! -f .env ] || ! grep -q '^CLOUDFLARED_TUNNEL_TOKEN=' .env 2>/dev/null; then
-    echo "${YELLOW}Cloudflare tunnel token is needed once to start the shared app.${NC}"
-    printf "Paste the token now: "
-    stty -echo
-    read -r CLOUDFLARED_TUNNEL_TOKEN
-    stty echo
-    echo ""
-
-    if [ -z "${CLOUDFLARED_TUNNEL_TOKEN:-}" ]; then
-        echo "${RED}No token provided. Aborting.${NC}"
-        exit 1
-    fi
-
-    cat > .env <<EOF
-CLOUDFLARED_TUNNEL_TOKEN=${CLOUDFLARED_TUNNEL_TOKEN}
-EOF
-    chmod 600 .env
-fi
-
-echo "${YELLOW}Starting the app and tunnel...${NC}"
+echo "${YELLOW}Starting the local app...${NC}"
 
 if docker compose version >/dev/null 2>&1; then
-    docker compose -f docker-compose.tunnel.yml up -d --build
+    docker compose up -d --build
 else
-    docker-compose -f docker-compose.tunnel.yml up -d --build
+    docker-compose up -d --build
 fi
 
 echo ""
 echo "${GREEN}The app is starting now.${NC}"
-echo "${BLUE}Your Cloudflare tunnel will be available through the hostname configured in Cloudflare.${NC}"
-echo "${BLUE}To stop it later, run the same compose file with 'down'.${NC}"
+echo "${BLUE}Open http://localhost:8081 in your browser.${NC}"
+echo "${BLUE}To stop it later, run 'docker compose down'.${NC}"

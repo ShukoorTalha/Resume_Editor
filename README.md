@@ -17,7 +17,7 @@ A modern, feature-rich resume builder built with React, TypeScript, and Tailwind
 
 ### One-command start for non-technical users
 
-If Docker is already installed, the simplest way to run the app is:
+If Docker is already installed, the simplest way to run the app locally is:
 
 ```bash
 ./quick-start.sh
@@ -29,20 +29,18 @@ If the file is not executable yet, run this once first:
 chmod +x quick-start.sh
 ```
 
-The first time you run it, the script asks for the Cloudflare tunnel token once, saves it locally in `.env`, and starts the app.
+The script starts the local Docker Compose stack and opens on port `8081`.
 
-If you already have a `.env` file, make sure it contains:
-
-```bash
-CLOUDFLARED_TUNNEL_TOKEN=your-token-here
-```
+If you want to use the Cloudflare tunnel workflow, run the tunnel Compose file explicitly and provide `CLOUDFLARED_TUNNEL_TOKEN` in your environment.
 
 ### Run locally with Docker
 
-If you just want the app running on your own machine, use the standard Compose file:
+If you just want the app running on your own machine, use the standard Compose file or the quick start script:
 
 ```bash
 docker compose up -d
+# or
+./quick-start.sh
 ```
 
 Then open:
@@ -58,6 +56,12 @@ docker compose down
 ```
 
 This path is self-contained and does not require `npm install` during the Docker build.
+
+Optional tunnel workflow:
+
+```bash
+CLOUDFLARED_TUNNEL_TOKEN=your-token-here docker compose -f docker-compose.tunnel.yml up -d --build
+```
 
 ### Option 1: Run with Docker (Recommended)
 
@@ -75,12 +79,6 @@ If you have Docker installed, you can get up and running in seconds.
    ```bash
    docker-compose up -d
    ```
-
-  If you are using the Cloudflare tunnel workflow, run:
-
-  ```bash
-  ./quick-start.sh
-  ```
 
   If you run it manually with `docker run`, include restart support:
 
