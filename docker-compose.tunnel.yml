@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -11,4 +9,11 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      CLOUDFLARED_TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN}
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: resume-builder-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TUNNEL_TOKEN}
+    depends_on:
+      - app

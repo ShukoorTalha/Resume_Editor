@@ -1,35 +1,51 @@
-# Build stage - compile React app with Node
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Production stage - serve with lightweight Nginx and Cloudflare Tunnel
-FROM nginx:alpine
+# Build stage - bundle the app with a standalone esbuild binary
+FROM alpine:3.20 AS builder
 
 ARG TARGETARCH
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
 
-RUN apk add --no-cache ca-certificates curl tzdata \
-  && update-ca-certificates \
-  && ARCH="${TARGETARCH:-}" \
-  && if [ -z "$ARCH" ]; then \
+COPY vendor/esbuild/ /opt/esbuild/
+COPY . .
+
+RUN set -eux; \
+  ARCH="${TARGETARCH:-}"; \
+  if [ -z "$ARCH" ]; then \
     case "$(uname -m)" in \
-      x86_64) ARCH=amd64 ;; \
+      x86_64|amd64) ARCH=amd64 ;; \
       aarch64|arm64) ARCH=arm64 ;; \
       *) echo "Unsupported architecture: $(uname -m)" && exit 1 ;; \
     esac; \
-  fi \
-  && case "$ARCH" in \
-    amd64|arm64) CLOUDFLARED_ARCH="$ARCH" ;; \
+  fi; \
+  case "$ARCH" in \
+    amd64) install -m 755 /opt/esbuild/linux-x64/esbuild /usr/local/bin/esbuild ;; \
+    arm64) install -m 755 /opt/esbuild/linux-arm64/esbuild /usr/local/bin/esbuild ;; \
     *) echo "Unsupported architecture: $ARCH" && exit 1 ;; \
-  esac \
-  && curl -fsSL "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${CLOUDFLARED_ARCH}" -o /usr/local/bin/cloudflared \
-  && chmod +x /usr/local/bin/cloudflared
+  esac; \
+  esbuild index.tsx \
+    --bundle \
+    --format=esm \
+    --platform=browser \
+    --target=es2020 \
+    --jsx=transform \
+    --external:react \
+    --external:react-dom \
+    --external:react-dom/client \
+    --external:lucide-react \
+    --loader:.css=css \
+    --outdir=dist \
+    --entry-names=index; \
+  cp index.html dist/index.html; \
+  sed -i '/<script type="module" src="\/index.tsx"><\/script>/i \    <link rel="stylesheet" href="/index.css" />' dist/index.html; \
+  sed -i 's|/index.tsx|/index.js|' dist/index.html
+
+# Production stage - serve the compiled app with lightweight Nginx
+FROM nginx:alpine
+
+WORKDIR /usr/share/nginx/html
+
+RUN apk add --no-cache ca-certificates tzdata \
+  && update-ca-certificates
 
 # Copy built app from builder stage
 COPY --from=builder /app/dist .

@@ -37,6 +37,28 @@ If you already have a `.env` file, make sure it contains:
 CLOUDFLARED_TUNNEL_TOKEN=your-token-here
 ```
 
+### Run locally with Docker
+
+If you just want the app running on your own machine, use the standard Compose file:
+
+```bash
+docker compose up -d
+```
+
+Then open:
+
+```bash
+http://localhost:8081
+```
+
+To stop it later:
+
+```bash
+docker compose down
+```
+
+This path is self-contained and does not require `npm install` during the Docker build.
+
 ### Option 1: Run with Docker (Recommended)
 
 If you have Docker installed, you can get up and running in seconds.
@@ -53,6 +75,12 @@ If you have Docker installed, you can get up and running in seconds.
    ```bash
    docker-compose up -d
    ```
+
+  If you are using the Cloudflare tunnel workflow, run:
+
+  ```bash
+  ./quick-start.sh
+  ```
 
   If you run it manually with `docker run`, include restart support:
 
